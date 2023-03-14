@@ -1,1 +1,1 @@
-this file will contain basic command about shell premissions
+This read me file conatin command lines for shell permissions 
