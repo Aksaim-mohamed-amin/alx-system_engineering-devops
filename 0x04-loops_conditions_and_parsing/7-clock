@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+# displays Best School 10 times using while loop and diplay hi in the 9th iteration
+
+hour=0
+min=1
+
+while [ $hour -le 12 ]
+do
+    echo "Hour: $hour"
+
+    while [ $min -le 59 ]
+    do
+	echo $min
+	min=$((min + 1))
+    done
+
+    hour=$((hour + 1))
+    min=1
+done
