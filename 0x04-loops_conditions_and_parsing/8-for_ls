@@ -1,19 +1,10 @@
 #!/usr/bin/env bash
-# displays Best School 10 times using while loop and diplay hi in the 9th iteration
+#displays:
+#   The content of the current directory
+#   In a list format
+#   Where only the part of the name after the first dash is displayed
 
-hour=0
-min=1
-
-while [ $hour -le 12 ]
+for file in $(ls)
 do
-    echo "Hour: $hour"
-
-    while [ $min -le 59 ]
-    do
-	echo $min
-	min=$((min + 1))
-    done
-
-    hour=$((hour + 1))
-    min=1
+    echo $file | cut -d "-" -f 2-
 done
