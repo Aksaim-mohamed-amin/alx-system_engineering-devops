@@ -1,10 +1,4 @@
 #!/usr/bin/env bash
-# displays To infinity and beyond indefinitely.
+# Stop the program 4-to_infinity_and_beyond
 
-i=0
-
-while [ $i ]
-do
-    echo "To infinity and beyond"
-    sleep 2
-done
+kill "$(pgrep -f ./4-to_infinity_and_beyond)"
