@@ -1,3 +1,8 @@
+/*
+ * File: 102-zombie.c
+ * Auth: Aksaim Mohamed Amin
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
