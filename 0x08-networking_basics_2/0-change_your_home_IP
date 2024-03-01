@@ -4,32 +4,8 @@
 #facebook.com resolves to 8.8.8.8
 
 #Copy the content of the hostes file to a new file
-if [ -f "/etc/hosts" ]; then
-    cp /etc/hosts ~/new_hosts
-else
-    touch ~/new_hosts
-fi
+cp /etc/hosts ~/new_hosts
 
-#Check if localhost already assigned to an ip
-if grep -q "localhost" ~/new_hosts; then
-    #if yes replace the ip
-    sed -i 's/^[0-9.]\+\tlocalhost$/127.0.0.2\tlocalhost/' ~/new_hosts
-else
-    #if no add it
-    echo -e "127.0.0.2\tlocalhost" >> ~/new_hosts
-fi
-
-#Check if facebook already assigned to an ip
-if grep -q "facebook" ~/new_hosts; then
-    #if yes replace the ip
-    sed -i 's/^[0-9.]\+\tfacebook$/8.8.8.8\tfacebook/' ~/new_hosts
-else
-    #if no add it
-    echo -e "8.8.8.8\tfacebook" >> ~/new_hosts
-fi
-
-#Replace the hosts file with the modified file
+sed -i 's/^[0-9.]\+\tlocalhost$/127.0.0.2\tlocalhost/' ~/new_hosts
+echo -e "8.8.8.8\tfacebook" >> ~/new_hosts
 cp -f ~/new_hosts /etc/hosts
-
-#Clean the tmp file
-rm ~/new_hosts
