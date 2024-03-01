@@ -4,7 +4,11 @@
 #facebook.com resolves to 8.8.8.8
 
 #Copy the content of the hostes file to a new file
-cp /etc/hosts ~/new_hosts
+if [ -f "/etc/hosts"]; then
+    cp /etc/hosts ~/new_hosts
+else
+    touch ~/new_hosts
+fi
 
 #Check if localhost already assigned to an ip
 if grep -q "localhost" ~/new_hosts; then
