@@ -4,4 +4,7 @@
 #   - facebook.com resolves to 8.8.8.8
 
 cp /etc/hosts ~/hosts_new
-sed -i 's/^[0-9.]\+\tlocalhost$/127.0.0.1\tlocalhost/'
+sed -i 's/^[0-9.]\+\tlocalhost$/127.0.0.1\tlocalhost/' ~/hosts_new
+
+
+cp -f ~/hosts_new /etc/hosts
