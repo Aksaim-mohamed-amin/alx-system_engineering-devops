@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+# onfigures an Ubuntu server with the below requirements.
+#localhost resolves to 127.0.0.2
+#facebook.com resolves to 8.8.8.8
+
+#Copy the content of the hostes file to a new file
+cp /etc/hosts ~/new_hosts
+
+#Change the localhost ip
+sed -i 's/^[0-9.]\+\tlocalhost$/127.0.0.2\tlocalhost/' ~/new_hosts
+
+#Check if facebook already assigned to an ip
+if grep -q "facebook" ~/new_hosts; then
+    #if yes replace the ip
+    sed -i 's/^[0-9.]\+\tfacebook$/8.8.8.8\tfacebook/' ~/new_hosts
+else
+    #if no add it
+    echo -e "8.8.8.8\tfacebook" >> ~/new_hosts
+fi
+
+#Replace the hosts file with the modified file
+cp -f ~/new_hosts /etc/hosts
+
+#Clean the tmp file
+rm ~/new_hosts
