@@ -4,7 +4,7 @@
 #facebook.com resolves to 8.8.8.8
 
 #Copy the content of the hostes file to a new file
-if [ -f "/etc/hosts"]; then
+if [ -f "/etc/hosts" ]; then
     cp /etc/hosts ~/new_hosts
 else
     touch ~/new_hosts
