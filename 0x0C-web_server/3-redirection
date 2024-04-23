@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Install nginx web server
+# Configure Nginx server so that /redirect_me is redirecting to another page.
 
 # Update package lists
 sudo apt-get update
@@ -24,15 +24,15 @@ server {
 
        server_name _;
 
-       location / {
-                try_files \$uri \$uri/ =404;
-       }
-
        location /redirect_me {
        		return 301 https://youtube.com;
+       }
+
+       location / {
+                try_files \$uri \$uri/ =404;
        }
 }
 EOF'
 
-# Restart Nginx
+# Restart Nginx server
 sudo service nginx restart
