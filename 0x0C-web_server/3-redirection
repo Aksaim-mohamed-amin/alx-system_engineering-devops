@@ -1,10 +1,37 @@
-#!/usr/bin/env bash
-# Configure Nginx server so that /redirect_me is redirecting to another page.
+# Install nginx web server
 
-# Add a new directive to the default Nginx file for redirecting the page /redirect_me
-new_location="\tlocation /redirect_me {\n\t\treturn 301 https://youtube.com;\n\t}\n\n\tlocation / {"
+# Update package lists
+sudo apt-get update
 
-sudo sed -i "s#^\s*location / {# $new_location#" /etc/nginx/sites-available/default
+# Install Nginx
+sudo apt-get install -y nginx
 
-# Restart Nginx server
+# Allow connections to Nginx over the firwall
+sudo ufw allow 'Nginx HTTP'
+
+# Cretae the index.html file
+sudo bash -c 'echo -e "Hello World!" > /var/www/html/index.html'
+
+# Configure Nginx to listen on port 80
+sudo bash -c 'cat <<EOF > /etc/nginx/sites-available/default
+server {
+       listen 80 default_server;
+       listen [::]:80 default_server;
+
+       root /var/www/html;
+       index index.html;
+
+       server_name _;
+
+       location / {
+                try_files \$uri \$uri/ =404;
+       }
+
+       location /redirect_me {
+       		return 301 https://youtube.com;
+       }
+}
+EOF'
+
+# Restart Nginx
 sudo service nginx restart
