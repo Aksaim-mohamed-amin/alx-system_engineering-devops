@@ -6,7 +6,7 @@ sudo apt update
 sudo apt install -y haproxy
 
 # Enable HAProxy init script
-sudo sed -i '\ENABLED=0\ENABLED=1\' /etc/default/haproxy
+echo "ENABLED=1" >> /etc/default/haproxy
 
 # HAProxy Configuration: Global
 sudo cp /etc/haproxy/haproxy.cfg /etc/haproxy/haproxy.cfg.orig
