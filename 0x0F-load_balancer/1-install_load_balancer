@@ -5,37 +5,41 @@
 sudo apt update
 sudo apt install -y haproxy
 
-# Enable HAProxy init script
+# Configure HAProxy
+sudo cp /etc/haproxy/haproxy.cfg /etc/haproxy/haproxy.cfg.original
+
+sudo bash -c 'cat <<EOF > /etc/haproxy/haproxy.cfg
+global
+    log /dev/log local0
+    log /dev/log local1 notice
+    maxconn 4096
+    chroot /var/lib/haproxy
+    user haproxy
+    group haproxy
+    daemon
+
+defaults
+    log global
+    mode http
+    option httplog
+    option dontlognull
+    timeout connect 5000
+    timeout client 50000
+    timeout server 50000
+
+frontend http_front
+    bind *:80
+    default_backend http_back
+
+backend http_back
+    balance roundrobin
+    server 391265-web-01 34.234.201.207:80 check
+    server 391265-web-02 54.166.131.142:80 check
+EOF'
+
+# Enable haproxy to be started by init script
 sudo bash -c 'echo "ENABLED=1" >> /etc/default/haproxy'
-
-# HAProxy Configuration: Global
-sudo cp /etc/haproxy/haproxy.cfg /etc/haproxy/haproxy.cfg.orig
-sudo sed -i 's/mode\thttp/mode\ttcp/' /etc/haproxy/haproxy.cfg
-sudo sed -i 's/option\thttplog/option\ttcplog/' /etc/haproxy/haproxy.cfg
-
-# HAProxy Configuration: Proxies
-CONFIG="
-frontend www
-	 bind 3.86.18.59:80
-	 default_backend web_backend
-
-backend web_backend
-	balance roundrobin
-	mode tcp
-	server 391265-web-01 34.234.201.207:80 check
-	server 391265-web-02 54.166.131.142:80 check
-"
-
-echo "$CONFIG" >> /etc/haproxy/haproxy.cfg
-
-# Install rsyslog
-sudo apt update
-sudo apt install -y rsyslog
-
-# Enabling HAProxy Logging
-sudo sed -i 's/#module(load="imudp")/module(load="imudp")/' /etc/rsyslog.conf
-sudo sed -i 's/#input(type="imudp" port="514")/input(type="imudp" port="514")/' /etc/rsyslog.conf
-sudo service rsyslog restart
 
 # Restart HAProxy
 sudo service haproxy restart
+sudo service haproxy start
