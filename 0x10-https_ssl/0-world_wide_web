@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+# display information about subdomains.
+
+SUB_DOMAINS=("www" "lb-01" "web-01" "web-02") 
+
+# Retrive the record of a domain and print it
+get_record() {
+
+    RESULT=$(dig "$2.$1" | grep -A1 'ANSWER SECTION:' | awk 'NR==2')
+    SUB_DOMAIN="$2"
+    RECORD_TYPE=$(awk '{print $4}' <<< "$RESULT")
+    DESTINATION=$(awk '{print $5}' <<< "$RESULT")
+
+    echo "The subdomain $SUB_DOMAIN is a $RECORD_TYPE record and points to $DESTINATION"
+}
+
+if [ $# -lt 1 ] || [ $# -gt 2 ]; then
+    echo "Usage $0 <domain> <subdomain (optional)>"
+
+elif [ $# -eq 2 ]; then
+    get_record "$1" "$2"
+
+elif [ $# -eq 1 ]; then
+    for SUB in "${SUB_DOMAINS[@]}"; do
+	get_record "$1" "$SUB"
+    done
+fi
