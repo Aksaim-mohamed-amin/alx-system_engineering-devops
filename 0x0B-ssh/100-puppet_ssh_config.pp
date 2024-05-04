@@ -1,9 +1,15 @@
-# Set up the cinfuguration file for ssh client
-file { '~/.ssh/config':
-  ensure => file,
-  content => '
-Host *
-     PasswordAuthentication no
-     IdentityFile ~/.ssh/school
-',
+# Configure the ssh client
+
+include stdlib
+
+file_line { 'Turn off passwd auth':
+  ensure => present,
+  path   => '/etc/ssh/ssh_config',
+  line   => 'PasswordAuthentication no',
+}
+
+file_line { 'Declare identity file':
+  ensure => present,
+  path   => '/etc/ssh/ssh_config',
+  line   => 'IdentityFile ~/.ssh/school',
 }
