@@ -1,6 +1,6 @@
 # Install a specific version of flask 2.1.0
 package { 'python3':
-  ensure => '3.8.10',
+  ensure => installed,
 }
 
 package { 'werkzeug':
