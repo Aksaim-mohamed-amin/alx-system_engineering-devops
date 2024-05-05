@@ -48,7 +48,7 @@ server {
 
        location / {
                 try_files $uri $uri/ =404;
-                add_header X-Served-By $hostname;
+                add_header X-Served-By $HOSTNAME;
        }
        
        location /redirect_me {
