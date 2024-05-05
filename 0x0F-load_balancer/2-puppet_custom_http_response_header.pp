@@ -27,10 +27,10 @@ file { '/var/www/html/404.html':
   owner   => 'www-data',
   group   => 'www-data',
   mode    => '0755',
-  content => "Ceci n'est pas une page"
+  content => "Ceci n'est pas une page",
 }
 
-# Configure Nginx server
+# Define Nginx server configuration
 file { '/etc/nginx/sites-available/default':
   ensure  => file,
   owner   => 'www-data',
@@ -47,8 +47,8 @@ server {
        server_name _;
 
        location / {
-                try_files "$uri" "$uri"/ =404;
-                add_header X-Served-By "$hostname";
+                try_files $uri $uri/ =404;
+                add_header X-Served-By $hostname;
        }
        
        location /redirect_me {
@@ -63,4 +63,11 @@ server {
 }',
   require => Package['nginx'],
   notify  => Service['nginx'],
+}
+
+# Validate Nginx configuration syntax
+exec { 'nginx_config_test':
+  command     => '/usr/sbin/nginx -t',
+  refreshonly => true,
+  notify      => Service['nginx'],
 }
