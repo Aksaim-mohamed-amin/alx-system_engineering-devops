@@ -30,6 +30,9 @@ file { '/var/www/html/404.html':
   content => "Ceci n'est pas une page"
 }
 
+# Set hostname variable
+$hostname = $facts['hostname']
+
 # Configure Nginx server
 file { '/etc/nginx/sites-available/default':
   ensure  => file,
@@ -48,7 +51,7 @@ server {
 
        location / {
                 try_files $uri $uri/ =404;
-                add_header X-Served-By ${hostname};
+                add_header X-Served-By $hostname;
        }
        
        location /redirect_me {
