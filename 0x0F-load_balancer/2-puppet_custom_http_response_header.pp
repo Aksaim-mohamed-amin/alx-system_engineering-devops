@@ -15,27 +15,18 @@ service { 'nginx':
 # Define a custom index page
 file { '/var/www/html/index.html':
   ensure  => file,
-  owner   => 'www-data',
-  group   => 'www-data',
-  mode    => '0755',
   content => 'Hello World!',
 }
 
 # Define a custom 404 page
 file { '/var/www/html/404.html':
   ensure  => file,
-  owner   => 'www-data',
-  group   => 'www-data',
-  mode    => '0755',
   content => "Ceci n'est pas une page"
 }
 
 # Configure Nginx server
 file { '/etc/nginx/sites-available/default':
   ensure  => file,
-  owner   => 'www-data',
-  group   => 'www-data',
-  mode    => '0755',
   content => '
 server {
        listen 80 default_server;
