@@ -1,57 +1,19 @@
-# Install Nginx web server and configure it
-
-# Install Nginx package
-package { 'nginx':
-  ensure => installed,
+#puppet advance
+exec { 'update':
+  command  => 'sudo apt-get update',
+  provider => shell,
 }
-
-# Ensure Nginx service is enabled and running
-service { 'nginx':
-  ensure  => running,
-  enable  => true,
-  require => Package['nginx'],
+-> package {'nginx':
+  ensure => present,
 }
-
-# Define a custom index page
-file { '/var/www/html/index.html':
-  ensure  => file,
-  content => 'Hello World!',
+-> file_line { 'header line':
+  ensure => present,
+  path   => '/etc/nginx/sites-available/default',
+  line   => "	location / {
+  add_header X-Served-By ${hostname};",
+  match  => '^\tlocation / {',
 }
-
-# Define a custom 404 page
-file { '/var/www/html/404.html':
-  ensure  => file,
-  content => "Ceci n'est pas une page"
-}
-
-# Configure Nginx server
-file { '/etc/nginx/sites-available/default':
-  ensure  => file,
-  content => '
-server {
-       listen 80 default_server;
-       listen [::]:80 default_server;
-
-       root /var/www/html;
-       index index.html;
-
-       server_name _;
-
-       location / {
-                try_files $uri $uri/ =404;
-                add_header X-Served-By $hostname;
-       }
-       
-       location /redirect_me {
-                return 301 https://youtube.com;
-       }
-
-       error_page 404 /404.html;
-       location = /404.html {
-                root /var/www/html;
-                internal;
-       }
-}',
-  require => Package['nginx'],
-  notify  => Service['nginx'],
+-> exec { 'restart service':
+  command  => 'sudo service nginx restart',
+  provider => shell,
 }
