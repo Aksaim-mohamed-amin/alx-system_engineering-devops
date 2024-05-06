@@ -1,24 +1,25 @@
-# Install Nginx web server and configure it with a custom header                          
+# Install Nginx web server and configure it with a custom header
 
-# Install Nginx package                                                                    
+# Install Nginx package
 package { 'nginx':
-  ensure => installed,
+  ensure => present,
 }
 
-# Ensure Nginx service is enabled and running                                             
-service { 'nginx':
-  ensure  => running,
-  enable  => true,
-  require => Package['nginx'],
-}
-
-# Configure Nginx server                                                                  
-file_line { 'add the custom header':
+# Configure Nginx server with custom header
+file_line { 'header line':
   ensure => present,
   path   => '/etc/nginx/sites-available/default',
-  line   => "                                                                             
-  location / {                                                                            
-    add_header X-Served-By ${hostname};",
-  match  => '^\tlocation / {',
+  line   => "    location / {
+    add_header X-Served-By ${hostname};
+  ",
+  match  => '^\s*location / {',
+  require => Package['nginx'],
   notify => Service['nginx'],
+}
+
+# Ensure Nginx service is running and enabled
+service { 'nginx':
+  ensure     => running,
+  enable     => true,
+  require    => Package['nginx'],
 }
