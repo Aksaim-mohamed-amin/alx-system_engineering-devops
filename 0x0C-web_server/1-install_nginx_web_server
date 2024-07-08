@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+# Install nginx web server
+
+# Install Nginx
+echo "############## Installing Nginx ##############"
+sudo apt-get update
+sudo apt-get install -y nginx
+
+echo "############## Configuring the Nginx server ##############"
+
+# Allow connections to Nginx over the firewall
+sudo ufw allow 'Nginx FULL'
+
+# Create the index page
+sudo bash -c 'echo -e "Hello World!" > /var/www/html/index.html'
+
+# Configur Nginx to listen on port 80
+sudo bash -c 'cat <<EOF > /etc/nginx/sites-available/default
+server {
+       listen 80 default_server;
+       listen [::]:80 default_server;
+
+       root /var/www/html;
+       index index.html;
+
+       server_name _;
+
+       location / {
+       		  try_files \$uri \$uri/ =404;
+       }
+}
+EOF'
+
+echo "############## Restarting Nginx Serevr ##############"
+sudo service nginx restart
+
+echo "############## Done server is ready ##############"
