@@ -14,5 +14,5 @@ file_line { 'Turn off passwd auth':
 file_line { 'Declare identity file':
   ensure => present,
   path   => '/home/user/.ssh/config',
-  lin    => 'IdentityFile ~/.ssh/school',
+  line   => 'IdentityFile ~/.ssh/school',
 }
