@@ -1,4 +1,6 @@
 # make changes to the ssh configuration file
+include stdlib
+
 file { '/home/user/.ssh/config':
   ensure => present,
 }
