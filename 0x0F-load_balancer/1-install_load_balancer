@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+# Install and configure HAproxy on a load balnce server.
+
+# Install HAProxy
+sudo apt update
+sudo apt install -y haproxy
+
+# Configure HAProxy
+sudo cp /etc/haproxy/haproxy.cfg /etc/haproxy/haproxy.cfg.original
+
+sudo bash -c 'cat <<EOF > /etc/haproxy/haproxy.cfg
+global
+    log /dev/log local0
+    log /dev/log local1 notice
+    maxconn 4096
+    chroot /var/lib/haproxy
+    user haproxy
+    group haproxy
+    daemon
+
+defaults
+    log global
+    mode http
+    option httplog
+    option dontlognull
+    timeout connect 5000
+    timeout client 50000
+    timeout server 50000
+
+frontend http_front
+    bind *:80
+    default_backend http_back
+
+backend http_back
+    balance roundrobin
+    server 391265-web-01 54.157.155.96:80 check
+    server 391265-web-02 3.89.155.99:80 check
+
+EOF'
+
+# Enable haproxy to be started by init script
+sudo bash -c 'echo "ENABLED=1" >> /etc/default/haproxy'
+
+# Restart HAProxy
+sudo service haproxy restart
+sudo service haproxy start
