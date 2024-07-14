@@ -12,12 +12,12 @@ if [ $# -eq 1 ]; then
     for SUB in "${SUB_DOMS[@]}"; do
 	TYPE=$(dig "$DOM" | awk '/ANSWER SECTION/{getline; print $4}')
 	VALUE=$(dig "$DOM" | awk '/ANSWER SECTION/{getline; print $5}')
-	echo "The subdomain $SUB is a $TYPE recored and points to $VALUE"
+	echo "The subdomain $SUB is a $TYPE record and points to $VALUE"
     done
 
 elif [ $# -eq 2 ]; then
     SUB="$2"
     TYPE=$(dig "$SUB.$DOM" | awk '/ANSWER SECTION/{getline; print $4}')
     VALUE=$(dig "$SUB.$DOM" | awk '/ANSWER SECTION/{getline; print $5}')
-    echo "The subdomain $SUB is a $TYPE recored and points to $VALUE"
+    echo "The subdomain $SUB is a $TYPE record and points to $VALUE"
 fi
