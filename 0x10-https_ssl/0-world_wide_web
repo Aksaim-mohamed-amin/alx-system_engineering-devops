@@ -15,7 +15,7 @@ if [ $# -eq 1 ]; then
 	echo "The subdomain $SUB is a $TYPE record and points to $VALUE"
     done
 
-elif [ $# -eq 2 ]; then
+elif [ $# -gt 1 ]; then
     SUB="$2"
     TYPE=$(dig "$SUB.$DOM" | awk '/ANSWER SECTION/{getline; print $4}')
     VALUE=$(dig "$SUB.$DOM" | awk '/ANSWER SECTION/{getline; print $5}')
