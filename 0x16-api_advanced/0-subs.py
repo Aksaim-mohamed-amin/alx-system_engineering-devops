@@ -12,9 +12,6 @@ def number_of_subscribers(subreddit):
     headers = {'User-Agent': 'ALX-APP'}
 
     rs = requests.get(url, headers=headers, allow_redirects=False)
-
-    print(rs.status_code)
-
     if rs.status_code == 200:
         return rs.json()['data']['subscribers']
     else:
