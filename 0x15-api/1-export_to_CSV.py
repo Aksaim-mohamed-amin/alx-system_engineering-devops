@@ -9,14 +9,14 @@ import requests
 import sys
 
 
-def get_name(id):
+def get_username(id):
     """Retrive the employee name"""
     rs = requests.get(f"https://jsonplaceholder.typicode.com/users/{id}")
     if rs.status_code != 200:
         print(f"Error retrieving employee name {rs.status_code}: {rs.reason}")
         return
     else:
-        return rs.json()['name']
+        return rs.json()['username']
 
 
 def get_tasks_list(id):
@@ -34,11 +34,11 @@ if len(sys.argv) != 2:
     exit
 else:
     employeeID = sys.argv[1]
-    employeeName = get_name(employeeID)
+    userName = get_username(employeeID)
     tasksList = get_tasks_list(employeeID)
 
     with open(f"{employeeID}.csv", 'w') as file:
         for task in tasksList:
-            row = [employeeID, employeeName, task['completed'], task['title']]
+            row = [employeeID, userName, task['completed'], task['title']]
             writer = csv.writer(file, quoting=csv.QUOTE_ALL)
             writer.writerow(row)
