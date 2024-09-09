@@ -22,7 +22,7 @@ def get_tasks_list(id):
 rs = requests.get('https://jsonplaceholder.typicode.com/users')
 if rs.status_code != 200:
     print(f"Error retrieving the users list {rs.status_code}: {rs.reason}")
-    exit
+    exit()
 else:
     usersList = rs.json()
 
@@ -34,7 +34,7 @@ for user in usersList:
     tasksList = []
     for task in todos:
         tasksList.append({
-            'username': user['name'],
+            'username': user['username'],
             'task': task['title'],
             'completed': task['completed']
         })
