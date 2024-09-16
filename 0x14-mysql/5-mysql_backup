@@ -9,7 +9,7 @@ fi
 MYSQL_ROOT_PASSWORD=$1
 DATE=$(date +"%d-%m-%Y")
 DUMP_FILE="backup.sql"
-ARCHIVE_NAME="${DATE}.tar.gz"
+ARCHIVE_NAME="$DATE.tar.gz"
 
 
 # create the backup file
