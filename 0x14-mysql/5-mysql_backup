@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+# Create a backup for sql server using the user root
+
+if [ $# -ne 1 ]; then
+   echo "Usage: $0 <mysql root password>"
+   exit 1
+fi
+
+MYSQL_ROOT_PASSWORD=$1
+DATE=$(date +"%d-%m-%Y")
+DUMP_FILE="backup.sql"
+ARCHIVE_NAME="${DATE}.tar.gz"
+
+
+# create the backup file
+sudo mysqldump -u root -p"$MYSQL_ROOT_PASSWORD" --all-databases > "$DUMP_FILE"
+if [ $? -ne 0 ]; then
+    echo "MySQL dump failed!"
+    exit 2
+fi
+
+
+# Archive the backup file
+tar -czvf "$ARCHIVE_NAME" "$DUMP_FILE"
+if [ $? -ne 0 ]; then
+    echo "Failed to create the tar.gz archive!"
+    exit 3
+fi
+
+
+# Output the name of the created archive
+echo "Backup successful! Archive created: $ARCHIVE_NAME"
+exit 0
