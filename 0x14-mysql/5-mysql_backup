@@ -13,7 +13,7 @@ ARCHIVE_NAME="${DATE}.tar.gz"
 
 
 # create the backup file
-sudo mysqldump -u root -p"$MYSQL_ROOT_PASSWORD" --all-databases > "$DUMP_FILE"
+mysqldump -uroot -p"$MYSQL_ROOT_PASSWORD" --all-databases > "$DUMP_FILE"
 if [ $? -ne 0 ]; then
     echo "MySQL dump failed!"
     exit 2
