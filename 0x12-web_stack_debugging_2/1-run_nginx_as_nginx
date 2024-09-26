@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+# Fix this container so that Nginx is running as the nginx user
+
+# Check if the nginx user exists
+if ! id nginx &> /dev/null; then
+   sudo useradd -r -s /bin/false nginx
+fi
+
+# Update the nginx config file
+NGINX_CONF="/etc/nginx/nginx.conf"
+sudo chmod 644 "$NGINX_CONF"
+sudo sed -i 's/^user .*/user nginx;/' "$NGINX_CONF"
+sudo sed -i 's/listen 80;/listen 8080;/' "$NGINX_CONF"
+
+# Stop apache2
+if pgrep -x apache2 > /dev/null; then
+    sudo service apache2 stop
+    sudo kill $(pgrep -x apache2)
+fi
+
+# Restart nginx
+sudo service nginx stop
+sudo -u nginx service nginx start
