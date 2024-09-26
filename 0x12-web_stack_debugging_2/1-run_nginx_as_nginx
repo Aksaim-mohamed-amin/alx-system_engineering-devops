@@ -15,7 +15,7 @@ sudo sed -i 's/listen 80;/listen 8080;/' "$NGINX_CONF"
 # Stop apache2
 if pgrep -x apache2 > /dev/null; then
     sudo service apache2 stop
-    sudo kill $(pgrep -x apache2)
+    sudo kill "$(pgrep -x apache2)"
 fi
 
 # Restart nginx
